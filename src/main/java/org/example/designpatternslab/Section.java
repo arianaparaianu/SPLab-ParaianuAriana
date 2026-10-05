@@ -3,7 +3,7 @@ package org.example.designpatternslab;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Section implements Element {
+public class Section extends Element {
 
     private String title;
     private List<Element> elements = new ArrayList<>();
@@ -18,12 +18,19 @@ public class Section implements Element {
 
     @Override
     public void add(Element element) {
+        if (element.getParent() != null) {
+            throw new IllegalStateException("Element already has a parent!");
+        }
+
         elements.add(element);
+        element.setParent(this);
     }
 
     @Override
     public void remove(Element element) {
-        elements.remove(element);
+        if (elements.remove(element)) {
+            element.setParent(null);
+        }
     }
 
     @Override
@@ -31,12 +38,15 @@ public class Section implements Element {
         return elements.get(index);
     }
 
-    @Override
-    public void print() {
-        System.out.println(title);
-
+    public void printElements() {
         for (Element element : elements) {
             element.print();
         }
+    }
+
+    @Override
+    public void print() {
+        System.out.println(title);
+        printElements();
     }
 }

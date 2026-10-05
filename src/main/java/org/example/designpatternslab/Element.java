@@ -1,12 +1,28 @@
 package org.example.designpatternslab;
 
-public interface Element {
+public abstract class Element {
 
-    void print();
+    private Section parent;
 
-    void add(Element element);
+    public Section getParent() {
+        return parent;
+    }
 
-    void remove(Element element);
+    public void setParent(Section parent) {
+        this.parent = parent;
+    }
 
-    Element get(int index);
+    public abstract void print();
+
+    public void add(Element element) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void remove(Element element) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Element get(int index) {
+        throw new UnsupportedOperationException();
+    }
 }
