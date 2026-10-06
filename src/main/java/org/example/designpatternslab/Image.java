@@ -6,6 +6,12 @@ public class Image extends Element {
 
     public Image(String name) {
         this.name = name;
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
