@@ -4,44 +4,26 @@ public class DesignPatternsLabApplication {
 
     public static void main(String[] args) throws Exception {
 
-        long startTime = System.currentTimeMillis();
+        Book myBook = new Book("My Book");
 
-        ImageProxy img1 = new ImageProxy("Pamela Anderson");
-        ImageProxy img2 = new ImageProxy("Kim Kardashian");
-        ImageProxy img3 = new ImageProxy("Kirby Griffin");
+        Section cap1 = new Section("Capitolul 1");
+        Section cap2 = new Section("Capitolul 2");
+        Section cap3 = new Section("Capitolul 3");
 
-        Section playboyS1 = new Section("Front Cover");
-        playboyS1.add(img1);
+        cap1.add(new Paragraph("Paragraph 1"));
+        cap2.add(new Paragraph("Paragraph 2"));
+        cap3.add(new Paragraph("Paragraph 3"));
 
-        Section playboyS2 = new Section("Summer Girls");
-        playboyS2.add(img2);
-        playboyS2.add(img3);
+        myBook.addContent(cap1);
+        myBook.addContent(cap2);
+        myBook.addContent(cap3);
 
-        Book playboy = new Book("Playboy");
-        playboy.addContent(playboyS1);
-        playboy.addContent(playboyS2);
+        GenerateToC generateToC = new GenerateToC();
 
-        long endTime = System.currentTimeMillis();
+        myBook.accept(generateToC);
 
-        System.out.println("Creation of the content took "
-                + (endTime - startTime) + " milliseconds");
+        TableOfContents toc = generateToC.getToC();
 
-        startTime = System.currentTimeMillis();
-
-        playboyS1.print();
-
-        endTime = System.currentTimeMillis();
-
-        System.out.println("Printing of the section 1 took "
-                + (endTime - startTime) + " milliseconds");
-
-        startTime = System.currentTimeMillis();
-
-        playboyS1.print();
-
-        endTime = System.currentTimeMillis();
-
-        System.out.println("Printing again the section 1 took "
-                + (endTime - startTime) + " milliseconds");
+        toc.render();
     }
 }

@@ -12,7 +12,9 @@ public abstract class Element {
         this.parent = parent;
     }
 
-    public abstract void print();
+    public abstract void render();
+
+    public abstract void accept(Visitor visitor);
 
     public void add(Element element) {
         throw new UnsupportedOperationException();

@@ -15,7 +15,12 @@ public class Image extends Element {
     }
 
     @Override
-    public void print() {
+    public void render() {
         System.out.println("Image with name:" + name);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

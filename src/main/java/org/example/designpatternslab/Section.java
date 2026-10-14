@@ -38,15 +38,17 @@ public class Section extends Element {
         return elements.get(index);
     }
 
-    public void printElements() {
-        for (Element element : elements) {
-            element.print();
-        }
+    @Override
+    public void render() {
+        System.out.println(title);
     }
 
     @Override
-    public void print() {
-        System.out.println(title);
-        printElements();
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+
+        for (Element element : elements) {
+            element.accept(visitor);
+        }
     }
 }

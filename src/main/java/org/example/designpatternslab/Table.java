@@ -9,7 +9,12 @@ public class Table extends Element {
     }
 
     @Override
-    public void print() {
+    public void render() {
         System.out.println("Table: " + title);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

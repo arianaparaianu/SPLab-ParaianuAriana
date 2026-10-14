@@ -20,7 +20,7 @@ public class Book extends Section {
     }
 
     @Override
-    public void print() {
+    public void render() {
         System.out.println("Book: " + getTitle());
         System.out.println();
 
@@ -30,7 +30,18 @@ public class Book extends Section {
         }
 
         System.out.println();
+    }
 
-        printElements();
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+
+        for (int i = 0; ; i++) {
+            try {
+                get(i).accept(visitor);
+            } catch (IndexOutOfBoundsException e) {
+                break;
+            }
+        }
     }
 }
