@@ -1,29 +1,40 @@
 package org.example.designpatternslab;
 
+import org.example.designpatternslab.difexamples.ClientComponent;
+import org.example.designpatternslab.difexamples.SingletonComponent;
+import org.example.designpatternslab.difexamples.TransientComponent;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
 public class DesignPatternsLabApplication {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
-        Book myBook = new Book("My Book");
+        ApplicationContext context =
+                SpringApplication.run(DesignPatternsLabApplication.class, args);
 
-        Section cap1 = new Section("Capitolul 1");
-        Section cap2 = new Section("Capitolul 2");
-        Section cap3 = new Section("Capitolul 3");
+        TransientComponent transientBean =
+                context.getBean(TransientComponent.class);
+        transientBean.operation();
 
-        cap1.add(new Paragraph("Paragraph 1"));
-        cap2.add(new Paragraph("Paragraph 2"));
-        cap3.add(new Paragraph("Paragraph 3"));
+        transientBean = context.getBean(TransientComponent.class);
+        transientBean.operation();
 
-        myBook.addContent(cap1);
-        myBook.addContent(cap2);
-        myBook.addContent(cap3);
+        SingletonComponent singletonBean =
+                context.getBean(SingletonComponent.class);
+        singletonBean.operation();
 
-        GenerateToC generateToC = new GenerateToC();
+        singletonBean = context.getBean(SingletonComponent.class);
+        singletonBean.operation();
 
-        myBook.accept(generateToC);
+        ClientComponent c1 =
+                context.getBean(ClientComponent.class);
+        c1.operation();
 
-        TableOfContents toc = generateToC.getToC();
-
-        toc.render();
+        ClientComponent c2 =
+                context.getBean(ClientComponent.class);
+        c2.operation();
     }
 }
