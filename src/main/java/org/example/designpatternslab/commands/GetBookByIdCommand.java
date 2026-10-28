@@ -1,19 +1,21 @@
 package org.example.designpatternslab.commands;
 
-import org.example.designpatternslab.services.BooksService;
+import org.example.designpatternslab.Book;
 
-public class GetBookByIdCommand implements Command<String> {
+public class GetBookByIdCommand implements Command<Book> {
 
-    private final BooksService booksService;
-    private final Long id;
+    private final CommandContext context;
+    private final Integer id;
 
-    public GetBookByIdCommand(BooksService booksService, Long id) {
-        this.booksService = booksService;
+    public GetBookByIdCommand(CommandContext context, Integer id) {
+        this.context = context;
         this.id = id;
     }
 
     @Override
-    public String execute() {
-        return booksService.getBookById(id);
+    public Book execute() {
+        return context.getBooksRepository()
+                .findById(id)
+                .orElse(null);
     }
 }

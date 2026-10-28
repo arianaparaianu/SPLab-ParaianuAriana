@@ -1,20 +1,23 @@
 package org.example.designpatternslab.commands;
 
-import org.example.designpatternslab.services.BooksService;
+import org.example.designpatternslab.Book;
 
-public class CreateBookCommand implements Command<String> {
+public class CreateBookCommand implements Command<Book> {
 
-    private final BooksService booksService;
-    private final String book;
+    private final CommandContext context;
+    private final String title;
 
-    public CreateBookCommand(BooksService booksService, String book) {
-        this.booksService = booksService;
-        this.book = book;
+    public CreateBookCommand(CommandContext context, String title) {
+        this.context = context;
+        this.title = title;
     }
 
     @Override
-    public String execute() {
-        booksService.createBook(book);
-        return "Book created: " + book;
+    public Book execute() {
+        Book book = new Book(title);
+
+        book = context.getBooksRepository().save(book);
+
+        return book;
     }
 }

@@ -1,19 +1,19 @@
 package org.example.designpatternslab.commands;
 
-import org.example.designpatternslab.services.BooksService;
+import org.example.designpatternslab.Book;
 
 import java.util.List;
 
-public class GetAllBooksCommand implements Command<List<String>> {
+public class GetAllBooksCommand implements Command<List<Book>> {
 
-    private final BooksService booksService;
+    private final CommandContext context;
 
-    public GetAllBooksCommand(BooksService booksService) {
-        this.booksService = booksService;
+    public GetAllBooksCommand(CommandContext context) {
+        this.context = context;
     }
 
     @Override
-    public List<String> execute() {
-        return booksService.getAllBooks();
+    public List<Book> execute() {
+        return context.getBooksRepository().findAll();
     }
 }

@@ -1,0 +1,15 @@
+POST http://localhost:8080/books
+Content-Type: text/plain
+
+Design Patterns
+
+###
+
+PUT http://localhost:8080/books/1
+Content-Type: text/plain
+
+Clean Code
+
+###
+
+DELETE http://localhost:8080/books/1

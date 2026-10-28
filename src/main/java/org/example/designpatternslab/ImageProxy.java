@@ -1,12 +1,25 @@
 package org.example.designpatternslab;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
+
+@Entity
 public class ImageProxy extends Element {
 
     private String imageName;
+
+    @Transient
     private Image realImage;
+
+    public ImageProxy() {
+    }
 
     public ImageProxy(String imageName) {
         this.imageName = imageName;
+    }
+
+    public String getImageName() {
+        return imageName;
     }
 
     private Image loadImage() {

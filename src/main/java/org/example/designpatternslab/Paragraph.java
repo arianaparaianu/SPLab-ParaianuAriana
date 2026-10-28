@@ -1,9 +1,18 @@
 package org.example.designpatternslab;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
+
+@Entity
 public class Paragraph extends Element {
 
     private String text;
+
+    @Transient
     private AlignStrategy alignStrategy;
+
+    public Paragraph() {
+    }
 
     public Paragraph(String text) {
         this.text = text;

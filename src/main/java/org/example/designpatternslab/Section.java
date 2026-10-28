@@ -1,12 +1,22 @@
 package org.example.designpatternslab;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Section extends Element {
 
     private String title;
+
+    @OneToMany(targetEntity = Element.class, cascade = CascadeType.ALL)
     private List<Element> elements = new ArrayList<>();
+
+    public Section() {
+    }
 
     public Section(String title) {
         this.title = title;
@@ -14,6 +24,10 @@ public class Section extends Element {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

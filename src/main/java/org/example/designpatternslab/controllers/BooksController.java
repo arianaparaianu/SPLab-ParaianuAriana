@@ -1,7 +1,8 @@
 package org.example.designpatternslab.controllers;
 
+import org.example.designpatternslab.Book;
 import org.example.designpatternslab.commands.*;
-import org.example.designpatternslab.services.BooksService;
+import org.example.designpatternslab.persistence.BooksRepositoryAdapter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,44 +13,44 @@ import java.util.Map;
 @RequestMapping("/books")
 public class BooksController {
 
-    private final BooksService booksService;
+    private final CommandContext commandContext;
     private final SynchronousCommandExecutor synchronousCommandExecutor;
     private final AsynchronousCommandExecutor asynchronousCommandExecutor;
 
     public BooksController(
-            BooksService booksService,
+            BooksRepositoryAdapter booksRepositoryAdapter,
             SynchronousCommandExecutor synchronousCommandExecutor,
             AsynchronousCommandExecutor asynchronousCommandExecutor) {
 
-        this.booksService = booksService;
+        this.commandContext = new CommandContext(booksRepositoryAdapter);
         this.synchronousCommandExecutor = synchronousCommandExecutor;
         this.asynchronousCommandExecutor = asynchronousCommandExecutor;
     }
 
     @GetMapping
-    public List<String> getAllBooks() {
+    public List<Book> getAllBooks() {
 
         GetAllBooksCommand command =
-                new GetAllBooksCommand(booksService);
+                new GetAllBooksCommand(commandContext);
 
         return synchronousCommandExecutor.execute(command).join();
     }
 
     @GetMapping("/{id}")
-    public String getBookById(@PathVariable Long id) {
+    public Book getBookById(@PathVariable Integer id) {
 
         GetBookByIdCommand command =
-                new GetBookByIdCommand(booksService, id);
+                new GetBookByIdCommand(commandContext, id);
 
         return synchronousCommandExecutor.execute(command).join();
     }
 
     @PostMapping
     public ResponseEntity<Map<String, String>> createBook(
-            @RequestBody String book) {
+            @RequestBody String title) {
 
         CreateBookCommand command =
-                new CreateBookCommand(booksService, book);
+                new CreateBookCommand(commandContext, title);
 
         String requestId =
                 asynchronousCommandExecutor.executeAsync(command);
@@ -63,21 +64,21 @@ public class BooksController {
     }
 
     @PutMapping("/{id}")
-    public String updateBook(
-            @PathVariable Long id,
-            @RequestBody String book) {
+    public Book updateBook(
+            @PathVariable Integer id,
+            @RequestBody String title) {
 
         UpdateBookCommand command =
-                new UpdateBookCommand(booksService, id, book);
+                new UpdateBookCommand(commandContext, id, title);
 
         return synchronousCommandExecutor.execute(command).join();
     }
 
     @DeleteMapping("/{id}")
-    public String deleteBook(@PathVariable Long id) {
+    public String deleteBook(@PathVariable Integer id) {
 
         DeleteBookCommand command =
-                new DeleteBookCommand(booksService, id);
+                new DeleteBookCommand(commandContext, id);
 
         return synchronousCommandExecutor.execute(command).join();
     }

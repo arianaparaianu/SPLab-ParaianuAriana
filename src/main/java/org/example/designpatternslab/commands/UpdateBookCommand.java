@@ -1,22 +1,31 @@
 package org.example.designpatternslab.commands;
 
-import org.example.designpatternslab.services.BooksService;
+import org.example.designpatternslab.Book;
 
-public class UpdateBookCommand implements Command<String> {
+public class UpdateBookCommand implements Command<Book> {
 
-    private final BooksService booksService;
-    private final Long id;
-    private final String book;
+    private final CommandContext context;
+    private final Integer id;
+    private final String title;
 
-    public UpdateBookCommand(BooksService booksService, Long id, String book) {
-        this.booksService = booksService;
+    public UpdateBookCommand(CommandContext context, Integer id, String title) {
+        this.context = context;
         this.id = id;
-        this.book = book;
+        this.title = title;
     }
 
     @Override
-    public String execute() {
-        booksService.updateBook(id, book);
-        return "Book updated: " + book;
+    public Book execute() {
+        Book book = context.getBooksRepository()
+                .findById(id)
+                .orElse(null);
+
+        if (book == null) {
+            return null;
+        }
+
+        book.setTitle(title);
+
+        return context.getBooksRepository().save(book);
     }
 }
